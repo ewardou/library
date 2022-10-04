@@ -24,3 +24,8 @@ input{
 p+p{
     margin-top: 10px;
 }
+.cards > div{
+    border:1px solid black;
+    padding:10px;
+    margin-bottom: 5px;
+}
