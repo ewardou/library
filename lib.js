@@ -3,35 +3,39 @@ let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
 
-function Book(title,author,pages){
+function Book(title,author,pages,read){
     this.title=title;
     this.author=author;
     this.pages=pages;
+    this.read=read;
 }
 
 function addBookToLibrary(){
     let titleInput=document.querySelector("#title");
     let authorInput=document.querySelector("#author");
     let pagesInput=document.querySelector("#pages")
+    let read=document.querySelector("#read");
 
-    let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value);
+    let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked);
     myLibrary.push(newBook);
     createCard(newBook);
     titleInput.value="";
     authorInput.value="";
     pagesInput.value="";
+    read.checked=false;
 }
 
-let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233");
+let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true);
 myLibrary.push(harryPotter);
-let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374");
+let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true);
 myLibrary.push(readyPlayerOne);
-let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512");
+let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false);
 myLibrary.push(sapiens)
 
 function createCard(book){
     let card=document.createElement("div");
     for (let property in book){
+        if (property==="read") {continue}
         let newItem=document.createElement("p");
         let content=document.createElement("p");
         newItem.textContent=`${property}`;
@@ -39,6 +43,11 @@ function createCard(book){
         content.textContent=`${book[property]}`;
         card.appendChild(content);
     }
+    let remove=document.createElement("button");
+    let icon=document.createElement("img");
+    icon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
+    remove.appendChild(icon);
+    card.appendChild(remove);
     cardsHolder.appendChild(card);
 }
  for (let i=0;i<myLibrary.length;i++){
@@ -70,15 +79,3 @@ function createCard(book){
     event.preventDefault();
     closePopUp()
 });
-// function createForm(){
-//     let newForm=document.createElement("form");
-//     let titleInput=document.createElement("input");
-//     let authorInput=document.createElement("input");
-//     let pagesInput=document.createElement("input");
-
-
-//     popUp.appendChild(newForm);
-//     newForm.appendChild(titleInput);
-//     newForm.appendChild(authorInput);
-//     newForm.appendChild(pagesInput);
-// }
