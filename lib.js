@@ -15,6 +15,7 @@ function addBookToLibrary(){
 
     let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value);
     myLibrary.push(newBook);
+    createCard(newBook);
     titleInput.value="";
     authorInput.value="";
     pagesInput.value="";
@@ -31,14 +32,29 @@ function createCard(book){
     let card=document.createElement("div");
     for (let property in book){
         let newItem=document.createElement("p");
-        newItem.textContent=`${property} : ${book[property]}`;
+        let content=document.createElement("p");
+        newItem.textContent=`${property}`;
         card.appendChild(newItem);
+        content.textContent=`${book[property]}`;
+        card.appendChild(content);
     }
     cardsHolder.appendChild(card);
 }
  for (let i=0;i<myLibrary.length;i++){
     createCard(myLibrary[i]);
  }
+
+ let addButton=document.querySelector("form>button");
+ addButton.addEventListener("click", (event) => {
+    event.preventDefault();
+    addBookToLibrary();
+    popUp.setAttribute("style","display:none");
+ });
+
+ let newBookButton=document.querySelector("main>button");
+ newBookButton.addEventListener("click",()=>{
+    popUp.setAttribute("style","display:block");
+ })
 // function createForm(){
 //     let newForm=document.createElement("form");
 //     let titleInput=document.createElement("input");

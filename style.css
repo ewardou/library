@@ -12,6 +12,11 @@ header{
 main{
     padding:15px;
 }
+.pop-up{
+    display: none;
+    z-index: 2;
+    background-color: wheat;
+}
 form{
     border:1px solid black;
     padding: 10px;
