@@ -47,7 +47,13 @@ function createCard(book){
     let icon=document.createElement("img");
     icon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
     remove.appendChild(icon);
+    remove.classList.add("remove");
     card.appendChild(remove);
+    let bookIndex=myLibrary.indexOf(book);
+    card.setAttribute("data-index",bookIndex);
+    card.setAttribute("data-title",book.title);
+    remove.setAttribute("data-index",bookIndex);
+    remove.addEventListener("click",removeBook);
     cardsHolder.appendChild(card);
 }
  for (let i=0;i<myLibrary.length;i++){
@@ -79,3 +85,22 @@ function createCard(book){
     event.preventDefault();
     closePopUp()
 });
+
+ function removeBook(){
+    let index=this.getAttribute("data-index");
+    let cardToRemove=document.querySelector(`div[data-index="${index}"]`);
+    myLibrary.splice(index,1);
+    console.log(myLibrary);
+    cardsHolder.removeChild(cardToRemove);
+    updateDataIndex();
+}
+
+function updateDataIndex(){
+    for (let i=0;i<myLibrary.length;i++){
+        let currentBook=myLibrary[i];
+        let currentCard=document.querySelector(`div[data-title="${currentBook.title}"]`);
+        let currentRemoveButton=document.querySelector(`div[data-title="${currentBook.title}"]>.remove`);
+        currentCard.setAttribute("data-index",i);
+        currentRemoveButton.setAttribute("data-index",i);
+    }
+}
