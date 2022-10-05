@@ -1,5 +1,6 @@
 let myLibrary=[];
 let popUp=document.querySelector(".pop-up");
+let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
 
 function Book(title,author,pages){
@@ -48,13 +49,27 @@ function createCard(book){
  addButton.addEventListener("click", (event) => {
     event.preventDefault();
     addBookToLibrary();
-    popUp.setAttribute("style","display:none");
+    closePopUp();
  });
 
  let newBookButton=document.querySelector("main>button");
  newBookButton.addEventListener("click",()=>{
-    popUp.setAttribute("style","display:block");
+    popUp.classList.add("active");
+    overlay.classList.add("active");
  })
+
+ function closePopUp(){
+    popUp.classList.remove("active");
+    overlay.classList.remove("active");
+ }
+
+ overlay.addEventListener("click",closePopUp)
+
+ let closeButton=document.querySelector(".close");
+ closeButton.addEventListener("click",(event)=>{
+    event.preventDefault();
+    closePopUp()
+});
 // function createForm(){
 //     let newForm=document.createElement("form");
 //     let titleInput=document.createElement("input");

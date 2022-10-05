@@ -13,9 +13,16 @@ main{
     padding:15px;
 }
 .pop-up{
-    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    transition: 200ms ease-in-out;
     z-index: 2;
-    background-color: wheat;
+    background-color: white;
+}
+.pop-up.active{
+    transform: translate(-50%,-50%) scale(1);
 }
 form{
     border:1px solid black;
@@ -33,4 +40,19 @@ p+p{
     border:1px solid black;
     padding:10px;
     margin-bottom: 5px;
+}
+.overlay{
+    position:fixed;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+    top:0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background-color: rgba(0,0,0,0.5);
+    pointer-events: none;
+}
+.overlay.active{
+    pointer-events: all;
+    opacity: 1;
 }
