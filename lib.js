@@ -8,7 +8,18 @@ function Book(title,author,pages,read){
     this.author=author;
     this.pages=pages;
     this.read=read;
-}
+};
+
+Book.prototype.markAsRead=function(){
+    let index=this.getAttribute("data-index");
+    if (myLibrary[index].read===false){
+        myLibrary[index].read=true;
+        document.querySelector(`div[data-index="${index}"]`).classList.add("read");
+    } else {
+        myLibrary[index].read=false;
+        document.querySelector(`div[data-index="${index}"]`).classList.remove("read");
+    }
+};
 
 function addBookToLibrary(){
     let titleInput=document.querySelector("#title");
@@ -35,25 +46,38 @@ myLibrary.push(sapiens)
 function createCard(book){
     let card=document.createElement("div");
     for (let property in book){
-        if (property==="read") {continue}
-        let newItem=document.createElement("p");
-        let content=document.createElement("p");
-        newItem.textContent=`${property}`;
-        card.appendChild(newItem);
-        content.textContent=`${book[property]}`;
-        card.appendChild(content);
+        if (book.hasOwnProperty(property)){
+            if (property==="read") {continue}
+            let newItem=document.createElement("p");
+            let content=document.createElement("p");
+            newItem.textContent=`${property}`;
+            card.appendChild(newItem);
+            content.textContent=`${book[property]}`;
+            card.appendChild(content);
+    
+        }
     }
-    let remove=document.createElement("button");
-    let icon=document.createElement("img");
-    icon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
-    remove.appendChild(icon);
-    remove.classList.add("remove");
-    card.appendChild(remove);
+    let removeButton=document.createElement("button");
+    let removeIcon=document.createElement("img");
+    removeIcon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
+    removeButton.appendChild(removeIcon);
+    removeButton.classList.add("remove");
+    card.appendChild(removeButton);
     let bookIndex=myLibrary.indexOf(book);
     card.setAttribute("data-index",bookIndex);
     card.setAttribute("data-title",book.title);
-    remove.setAttribute("data-index",bookIndex);
-    remove.addEventListener("click",removeBook);
+    removeButton.setAttribute("data-index",bookIndex);
+    removeButton.addEventListener("click",removeBook);
+
+    let readButton=document.createElement("button");
+    let readIcon=document.createElement("img");
+    readIcon.setAttribute("src","./icons/menu_book_FILL0_wght400_GRAD0_opsz48.svg");
+    readButton.appendChild(readIcon);
+    card.appendChild(readButton);
+    readButton.setAttribute("data-index",bookIndex);
+    readButton.addEventListener("click",book.markAsRead);
+
+    if (book.read){card.classList.add("read")};
     cardsHolder.appendChild(card);
 }
  for (let i=0;i<myLibrary.length;i++){
@@ -99,8 +123,10 @@ function updateDataIndex(){
     for (let i=0;i<myLibrary.length;i++){
         let currentBook=myLibrary[i];
         let currentCard=document.querySelector(`div[data-title="${currentBook.title}"]`);
-        let currentRemoveButton=document.querySelector(`div[data-title="${currentBook.title}"]>.remove`);
+        let currentButtons=document.querySelectorAll(`div[data-title="${currentBook.title}"]>button`);
         currentCard.setAttribute("data-index",i);
-        currentRemoveButton.setAttribute("data-index",i);
+        currentButtons.forEach(button=>{
+            button.setAttribute("data-index",i);
+        })
     }
 }

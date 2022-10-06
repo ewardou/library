@@ -25,7 +25,6 @@ main{
     transform: translate(-50%,-50%) scale(1);
 }
 form{
-    border:1px solid black;
     padding: 10px;
 }
 input{
@@ -37,7 +36,8 @@ p+p{
     margin-top: 10px;
 }
 .cards > div{
-    border:1px solid black;
+    transition: 200ms ease-in;
+    border:2px solid black;
     padding:10px;
     margin-bottom: 5px;
 }
@@ -55,4 +55,8 @@ p+p{
 .overlay.active{
     pointer-events: all;
     opacity: 1;
+}
+div.read{
+    border:2px solid greenyellow;
+    transition: 200ms ease-in;
 }
