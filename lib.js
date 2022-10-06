@@ -3,11 +3,12 @@ let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
 
-function Book(title,author,pages,read){
+function Book(title,author,pages,read,cover){
     this.title=title;
     this.author=author;
     this.pages=pages;
     this.read=read;
+    this.cover=cover;
 };
 
 Book.prototype.markAsRead=function(){
@@ -26,28 +27,47 @@ function addBookToLibrary(){
     let authorInput=document.querySelector("#author");
     let pagesInput=document.querySelector("#pages")
     let read=document.querySelector("#read");
+    let cover=document.querySelector("#cover");
 
-    let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked);
+    let file=cover.files[0];
+    let url;
+    if (file===undefined){
+        url="./covers/_.png"
+    } else{
+        url=URL.createObjectURL(file);
+    }
+
+
+    let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked,url);
     myLibrary.push(newBook);
     createCard(newBook);
     titleInput.value="";
     authorInput.value="";
     pagesInput.value="";
     read.checked=false;
+    cover.value="";
 }
 
-let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true);
+let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,"./covers/harrypotter.jpg");
 myLibrary.push(harryPotter);
-let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true);
+let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,"./covers/readyplayerone.jpg");
 myLibrary.push(readyPlayerOne);
-let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false);
-myLibrary.push(sapiens)
+let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false,"./covers/sapiens.jpg");
+myLibrary.push(sapiens);
+let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true,"./covers/dragonfly-in-amber.jpg");
+myLibrary.push(dragonflyInAmber);
+let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false,"./covers/and-then-there-were-none.jpg");
+myLibrary.push(thereWereNone);
 
 function createCard(book){
     let card=document.createElement("div");
+    let image=document.createElement("img");
+    image.setAttribute("src",book.cover);
+    image.setAttribute("style","height:200px;width:auto")
+    card.appendChild(image);
     for (let property in book){
         if (book.hasOwnProperty(property)){
-            if (property==="read") {continue}
+            if (property==="read" || property==="cover") {continue}
             let newItem=document.createElement("p");
             let content=document.createElement("p");
             newItem.textContent=`${property}`;
