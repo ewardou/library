@@ -35,8 +35,11 @@ function addBookToLibrary(){
         url="./covers/_.png"
     } else{
         url=URL.createObjectURL(file);
-    }
+    };
 
+    if(titleInput.value===""){
+        return alert("Please enter a title.")
+    };
 
     let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked,url);
     myLibrary.push(newBook);
@@ -65,24 +68,31 @@ function createCard(book){
     image.setAttribute("src",book.cover);
     image.setAttribute("style","height:200px;width:auto")
     card.appendChild(image);
+
+    let informationContainer=document.createElement("div")
     for (let property in book){
         if (book.hasOwnProperty(property)){
             if (property==="read" || property==="cover") {continue}
             let newItem=document.createElement("p");
             let content=document.createElement("p");
-            newItem.textContent=`${property}`;
-            card.appendChild(newItem);
+            newItem.textContent=capitalize(`${property}`);
+            newItem.classList.add("information-section");
+            informationContainer.appendChild(newItem);
             content.textContent=`${book[property]}`;
-            card.appendChild(content);
-    
+            if (content.textContent===""){
+                content.textContent="-";
+            }
+            informationContainer.appendChild(content);
         }
     }
+    card.appendChild(informationContainer);
+    let buttonContainer=document.createElement("div");
     let removeButton=document.createElement("button");
     let removeIcon=document.createElement("img");
     removeIcon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
     removeButton.appendChild(removeIcon);
     removeButton.classList.add("remove");
-    card.appendChild(removeButton);
+    buttonContainer.appendChild(removeButton);
     let bookIndex=myLibrary.indexOf(book);
     card.setAttribute("data-index",bookIndex);
     card.setAttribute("data-title",book.title);
@@ -93,10 +103,11 @@ function createCard(book){
     let readIcon=document.createElement("img");
     readIcon.setAttribute("src","./icons/menu_book_FILL0_wght400_GRAD0_opsz48.svg");
     readButton.appendChild(readIcon);
-    card.appendChild(readButton);
+    buttonContainer.appendChild(readButton);
     readButton.setAttribute("data-index",bookIndex);
     readButton.addEventListener("click",book.markAsRead);
 
+    card.appendChild(buttonContainer);
     if (book.read){card.classList.add("read")};
     cardsHolder.appendChild(card);
 }
@@ -111,7 +122,7 @@ function createCard(book){
     closePopUp();
  });
 
- let newBookButton=document.querySelector("main>button");
+ let newBookButton=document.querySelector("main>div:first-child>button");
  newBookButton.addEventListener("click",()=>{
     popUp.classList.add("active");
     overlay.classList.add("active");
@@ -143,10 +154,13 @@ function updateDataIndex(){
     for (let i=0;i<myLibrary.length;i++){
         let currentBook=myLibrary[i];
         let currentCard=document.querySelector(`div[data-title="${currentBook.title}"]`);
-        let currentButtons=document.querySelectorAll(`div[data-title="${currentBook.title}"]>button`);
+        let currentButtons=document.querySelectorAll(`div[data-title="${currentBook.title}"]>div>button`);
         currentCard.setAttribute("data-index",i);
         currentButtons.forEach(button=>{
             button.setAttribute("data-index",i);
         })
     }
+}
+function capitalize(word){
+    return word.charAt(0).toUpperCase()+word.slice(1);
 }

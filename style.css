@@ -1,19 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
 *{
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Open Sans', sans-serif;
+}
+body{
+    min-height: 100vh;
+    display: grid;
+    grid-template-rows: min-content 1fr;
 }
 header{
-    background-color: rgb(134, 238, 108);
-    padding: 10px 20px;
+    background-color:  rgb(87, 100, 144);
+    padding: 5px 20px 0px;
     font-size: 1.5rem;
+    z-index: 2;
+    display: flex;
+    align-items: center;
     font-weight: bold;
+    color:white;
+    letter-spacing:2px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0,0.5);
+}
+header>p{
+    position: relative;
+    bottom: 5px;
+}
+header>img{
+    height: 60px;
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(71deg) brightness(104%) contrast(101%);
 }
 main{
-    padding:15px;
+    padding:20px;
+    background-color: rgb(209, 210, 249);
 }
 .pop-up{
     position: fixed;
+    border-radius: 10px;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%) scale(0);
@@ -25,21 +49,72 @@ main{
     transform: translate(-50%,-50%) scale(1);
 }
 form{
-    padding: 10px;
+    padding: 15px;
+    display:grid;
+    border-radius: 10px;
+    grid-auto-rows: min-content;
+    gap:10px;
+    border:1px solid black;
+}
+form>div{
+    display: grid;
+    grid-template-columns: 1fr min-content;
+}
+form>div>button{
+    padding:0px 2px;
+    font-size: 15px;
 }
 input{
     display: block;
     padding: 5px;
+    width: 90%;
     border-radius: 5px;
 }
-p+p{
-    margin-top: 10px;
+
+#read{
+    width: min-content;
+    display: inline-block; 
+}
+
+form>button{
+    padding: 5px;
+    font-weight: bolder;
+}
+.cards{
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(300px,1fr));
+    grid-auto-rows: 1fr;
+    gap:30px;
 }
 .cards > div{
     transition: 200ms ease-in;
     border:2px solid black;
-    padding:10px;
-    margin-bottom: 5px;
+    border-radius: 5px;
+    padding:15px;
+    background-color: white;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    box-shadow: 2px 2px 8px rgba(0, 0, 0,0.7);
+}
+.cards>div::after{
+    content: "Read";
+    border:1px solid black;
+    padding: 5px;
+    font-weight: bolder;
+    font-size: 0.9rem;
+    color:white;
+    background-color: black;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    opacity: 0;
+    transition: 200ms ease-in-out;
+}
+.cards>div.read::after{
+    opacity: 1;
+    transition: 200ms ease-in-out;
 }
 .overlay{
     position:fixed;
@@ -57,6 +132,69 @@ p+p{
     opacity: 1;
 }
 div.read{
-    border:2px solid greenyellow;
+    border:3px solid rgb(18, 134, 243);
     transition: 200ms ease-in;
+}
+main>div:first-child{
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+main>div:first-child>p{
+    flex:1;
+    font-style: italic;
+    font-weight: bold;
+}
+main>div:first-child>button{
+    padding:5px 10px;
+    background-color: rgb(119, 150, 203);
+    color:white;
+    font-weight: bold;
+    border-radius: 5px;
+    border:1px solid gray;
+}
+main>div:first-child>button:hover{
+    background-color:rgb(163, 188, 249);
+}
+main>div:first-child>button:active{
+    background-color:rgb(87, 100, 144);
+}
+.information-section{
+    font-weight: bold;
+}
+.information-section+p{
+    margin-bottom: 5px;
+}
+.cards>div>div:first-of-type{
+    flex:1;
+    text-align: center;
+}
+
+.cards>div>div:nth-of-type(2){
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+.cards button>img{
+    height: 30px;
+}
+.cards div>button{
+    border-radius: 5px;
+    border-width: 1px;
+    padding: 2px;
+}
+.remove{
+    background-color: rgb(247, 45, 45);
+}
+.remove:hover{
+    background-color: rgb(245, 87, 87);
+}
+.remove:active{
+    background-color: rgb(238, 28, 28);
+}
+div>button:nth-of-type(2):hover{
+    background-color:lightblue;
+}
+div.read button:nth-child(2){
+    background-color: lightblue;
 }
