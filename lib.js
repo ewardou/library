@@ -86,6 +86,7 @@ function createCard(book){
         }
     }
     card.appendChild(informationContainer);
+
     let buttonContainer=document.createElement("div");
     let removeButton=document.createElement("button");
     let removeIcon=document.createElement("img");
@@ -97,7 +98,7 @@ function createCard(book){
     card.setAttribute("data-index",bookIndex);
     card.setAttribute("data-title",book.title);
     removeButton.setAttribute("data-index",bookIndex);
-    removeButton.addEventListener("click",removeBook);
+    removeButton.addEventListener("click",openConfirmationModal);
 
     let readButton=document.createElement("button");
     let readIcon=document.createElement("img");
@@ -131,6 +132,9 @@ function createCard(book){
  function closePopUp(){
     popUp.classList.remove("active");
     overlay.classList.remove("active");
+    let confirmDeletionModal=document.querySelector(".deletion-confirmation");
+    confirmDeletionModal.classList.remove("active");
+    confirmDeletionButton.removeAttribute("data-index");
  }
 
  overlay.addEventListener("click",closePopUp)
@@ -141,14 +145,28 @@ function createCard(book){
     closePopUp()
 });
 
- function removeBook(){
-    let index=this.getAttribute("data-index");
+let confirmDeletionModal=document.querySelector(".deletion-confirmation");
+let cancelDeletionButton=confirmDeletionModal.querySelector("button:first-of-type");
+cancelDeletionButton.addEventListener("click",closePopUp);
+
+let confirmDeletionButton=confirmDeletionModal.querySelector("button:nth-of-type(2)");
+confirmDeletionButton.addEventListener("click",removeBook);
+
+function openConfirmationModal(){
+    confirmDeletionModal.classList.add("active");
+    overlay.classList.add("active");
+    confirmDeletionButton.setAttribute("data-index",this.getAttribute("data-index"));
+};
+ 
+function removeBook(){
+    let index=confirmDeletionButton.getAttribute("data-index");
     let cardToRemove=document.querySelector(`div[data-index="${index}"]`);
     myLibrary.splice(index,1);
     console.log(myLibrary);
     cardsHolder.removeChild(cardToRemove);
-    updateDataIndex();
-}
+    updateDataIndex();    
+    closePopUp();
+};
 
 function updateDataIndex(){
     for (let i=0;i<myLibrary.length;i++){

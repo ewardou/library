@@ -6,6 +6,9 @@
     box-sizing: border-box;
     font-family: 'Open Sans', sans-serif;
 }
+button{
+    cursor: pointer;
+}
 body{
     min-height: 100vh;
     display: grid;
@@ -197,4 +200,45 @@ div>button:nth-of-type(2):hover{
 }
 div.read button:nth-child(2){
     background-color: lightblue;
+}
+.deletion-confirmation{
+    background-color: white;
+    width: 300px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 5px;
+    border: 1px solid black;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%) scale(0);
+    z-index: 3;
+    transition: 200ms ease-in-out;
+}
+.deletion-confirmation.active{
+    transform: translate(-50%,-50%) scale(1);
+}
+.deletion-confirmation p{
+    margin-bottom: 20px;
+}
+.deletion-confirmation button{
+    padding: 5px 15px;
+    font-size: 15px;
+    border-radius: 5px;
+}
+.deletion-confirmation button+button{
+    margin-left: 30px;
+}
+.deletion-confirmation button:first-of-type{
+    background-color: rgb(247, 45, 45);
+}
+.deletion-confirmation button:nth-of-type(2){
+    background-color: rgb(68, 243, 24);
+}
+
+.deletion-confirmation button:first-of-type:hover{
+    background-color: rgb(247, 74, 74);
+}
+.deletion-confirmation button:nth-of-type(2):hover{
+    background-color: rgb(143, 243, 118);
 }
