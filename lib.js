@@ -3,22 +3,23 @@ let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
 
-function Book(title,author,pages,read,cover){
-    this.title=title;
-    this.author=author;
-    this.pages=pages;
-    this.read=read;
-    this.cover=cover;
-};
-
-Book.prototype.markAsRead=function(){
-    let index=this.getAttribute("data-index");
-    if (myLibrary[index].read===false){
-        myLibrary[index].read=true;
-        document.querySelector(`div[data-index="${index}"]`).classList.add("read");
-    } else {
-        myLibrary[index].read=false;
-        document.querySelector(`div[data-index="${index}"]`).classList.remove("read");
+class Book{
+    constructor(title,author,pages,read,cover){
+        this.title=title;
+        this.author=author;
+        this.pages=pages;
+        this.read=read;
+        this.cover=cover;    
+    }
+    markAsRead(){
+        let index=this.getAttribute("data-index");
+        if (myLibrary[index].read===false){
+            myLibrary[index].read=true;
+            document.querySelector(`div[data-index="${index}"]`).classList.add("read");
+        } else {
+            myLibrary[index].read=false;
+            document.querySelector(`div[data-index="${index}"]`).classList.remove("read");
+        }    
     }
 };
 
@@ -44,11 +45,7 @@ function addBookToLibrary(){
     let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked,url);
     myLibrary.push(newBook);
     createCard(newBook);
-    titleInput.value="";
-    authorInput.value="";
-    pagesInput.value="";
-    read.checked=false;
-    cover.value="";
+    document.querySelector("form").reset();
 }
 
 let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,"./covers/harrypotter.jpg");
@@ -112,9 +109,12 @@ function createCard(book){
     if (book.read){card.classList.add("read")};
     cardsHolder.appendChild(card);
 }
- for (let i=0;i<myLibrary.length;i++){
-    createCard(myLibrary[i]);
- }
+function render(){
+    for (let i=0;i<myLibrary.length;i++){
+        createCard(myLibrary[i]);
+    }
+};
+render();
 
  let addButton=document.querySelector("form>button");
  addButton.addEventListener("click", (event) => {
@@ -159,11 +159,11 @@ function openConfirmationModal(){
 };
  
 function removeBook(){
+    let oldBooks=document.querySelectorAll(".cards>div");
+    oldBooks.forEach(book=>cardsHolder.removeChild(book));
     let index=confirmDeletionButton.getAttribute("data-index");
-    let cardToRemove=document.querySelector(`div[data-index="${index}"]`);
     myLibrary.splice(index,1);
-    console.log(myLibrary);
-    cardsHolder.removeChild(cardToRemove);
+    render();
     updateDataIndex();    
     closePopUp();
 };
