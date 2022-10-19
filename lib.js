@@ -32,7 +32,7 @@ function addBookToLibrary(){
     let file=cover.files[0];
     let url;
     if (file===undefined){
-        url="./covers/_.jpeg"
+        url="https://i.pinimg.com/originals/9e/96/e0/9e96e04a23a8a08cda9fd978529cb2dc.png"
     } else{
         url=URL.createObjectURL(file);
     };
