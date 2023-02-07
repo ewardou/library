@@ -1,3 +1,30 @@
+import "./style.css";
+import readyPlayerOneCover from "./covers/readyplayerone.jpg";
+import sapiensCover from "./covers/sapiens.jpg";
+import harryPotterCover from "./covers/harrypotter.jpg";
+import dragonflyInAmberCover from "./covers/dragonfly-in-amber.jpg";
+import thereWereNoneCover from "./covers/and-then-there-were-none.jpg";
+import bookIcon from "./icons/menu_book_FILL0_wght400_GRAD0_opsz48.svg";
+import deleteIcon from "./icons/block_FILL0_wght400_GRAD0_opsz48.svg";
+
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyCPMiZVHlznbo5sc3XU-YeioB1nricjk1g",
+  authDomain: "library-3f33a.firebaseapp.com",
+  projectId: "library-3f33a",
+  storageBucket: "library-3f33a.appspot.com",
+  messagingSenderId: "347599461313",
+  appId: "1:347599461313:web:9cce401a8a46b2047f6d40"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
 let myLibrary=[];
 let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
@@ -48,15 +75,15 @@ function addBookToLibrary(){
     document.querySelector("form").reset();
 }
 
-let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,"./covers/harrypotter.jpg");
+let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,harryPotterCover);
 myLibrary.push(harryPotter);
-let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,"./covers/readyplayerone.jpg");
+let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,readyPlayerOneCover);
 myLibrary.push(readyPlayerOne);
-let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false,"./covers/sapiens.jpg");
+let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false, sapiensCover);
 myLibrary.push(sapiens);
-let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true,"./covers/dragonfly-in-amber.jpg");
+let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true, dragonflyInAmberCover);
 myLibrary.push(dragonflyInAmber);
-let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false,"./covers/and-then-there-were-none.jpg");
+let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false, thereWereNoneCover);
 myLibrary.push(thereWereNone);
 
 function createCard(book){
@@ -87,7 +114,7 @@ function createCard(book){
     let buttonContainer=document.createElement("div");
     let removeButton=document.createElement("button");
     let removeIcon=document.createElement("img");
-    removeIcon.setAttribute("src","./icons/block_FILL0_wght400_GRAD0_opsz48.svg");
+    removeIcon.setAttribute("src",deleteIcon);
     removeButton.appendChild(removeIcon);
     removeButton.classList.add("remove");
     buttonContainer.appendChild(removeButton);
@@ -99,7 +126,7 @@ function createCard(book){
 
     let readButton=document.createElement("button");
     let readIcon=document.createElement("img");
-    readIcon.setAttribute("src","./icons/menu_book_FILL0_wght400_GRAD0_opsz48.svg");
+    readIcon.setAttribute("src", bookIcon);
     readButton.appendChild(readIcon);
     buttonContainer.appendChild(readButton);
     readButton.setAttribute("data-index",bookIndex);

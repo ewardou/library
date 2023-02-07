@@ -1,0 +1,31 @@
+{
+  "name": "library",
+  "version": "1.0.0",
+  "description": "In this library project an user can create an small collection of books he/she wants to read or have already read. The books are presented in cards where some information about them is displayed (author,title, number of pages, cover). When trying to add a new book to the library, only the title field is required. In case the other fields are left empty, these would be filled with \"-\" and a default cover.",
+  "main": "lib.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "start": "webpack --watch --progress",
+    "visualize-bundle": "webpack --analyze"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ewardou/library.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ewardou/library/issues"
+  },
+  "homepage": "https://github.com/ewardou/library#readme",
+  "dependencies": {
+    "firebase": "^9.17.1"
+  },
+  "devDependencies": {
+    "css-loader": "^6.7.3",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.75.0",
+    "webpack-cli": "^5.0.1"
+  }
+}
