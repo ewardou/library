@@ -9,10 +9,8 @@ import deleteIcon from "./icons/block_FILL0_wght400_GRAD0_opsz48.svg";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import {getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyCPMiZVHlznbo5sc3XU-YeioB1nricjk1g",
   authDomain: "library-3f33a.firebaseapp.com",
@@ -25,7 +23,30 @@ const firebaseConfig = {
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
+const db = getFirestore(app);
+
+async function AddInfoToDB(obj){
+    try {
+        const docRef = await addDoc(collection(db, "books"), {
+            ...obj
+        });
+        console.log("Document written with ID: ", docRef.id);
+      } catch (e) {
+        console.error("Error adding document: ", e);
+    }    
+}
+
 let myLibrary=[];
+
+async function getData(){
+    const querySnapshot = await getDocs(collection(db, "books"));
+    querySnapshot.forEach((doc) => {
+        myLibrary.push(doc.data());
+    });
+    render();
+}
+getData();
+
 let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
@@ -76,15 +97,10 @@ function addBookToLibrary(){
 }
 
 let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,harryPotterCover);
-myLibrary.push(harryPotter);
 let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,readyPlayerOneCover);
-myLibrary.push(readyPlayerOne);
 let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false, sapiensCover);
-myLibrary.push(sapiens);
 let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true, dragonflyInAmberCover);
-myLibrary.push(dragonflyInAmber);
 let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false, thereWereNoneCover);
-myLibrary.push(thereWereNone);
 
 function createCard(book){
     let card=document.createElement("div");
@@ -141,7 +157,6 @@ function render(){
         createCard(myLibrary[i]);
     }
 };
-render();
 
  let addButton=document.querySelector("form>button");
  addButton.addEventListener("click", (event) => {
