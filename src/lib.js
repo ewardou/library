@@ -9,7 +9,7 @@ import deleteIcon from "./icons/block_FILL0_wght400_GRAD0_opsz48.svg";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {getFirestore, collection, addDoc, getDocs } from "firebase/firestore";
+import {getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPMiZVHlznbo5sc3XU-YeioB1nricjk1g",
@@ -46,6 +46,12 @@ async function getData(){
     render();
 }
 getData();
+
+async function deleteDataFromDB(book){
+    const querySnapshot = await getDocs(collection(db, "books"));
+    const [bookInDB] = querySnapshot.docs.filter(doc=>doc.data().title===book.title);
+    deleteDoc(doc(db, "books", bookInDB.id));
+}
 
 let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
@@ -92,6 +98,7 @@ function addBookToLibrary(){
 
     let newBook=new Book(titleInput.value,authorInput.value,pagesInput.value,read.checked,url);
     myLibrary.push(newBook);
+    AddInfoToDB(newBook);
     createCard(newBook);
     document.querySelector("form").reset();
 }
@@ -204,6 +211,8 @@ function removeBook(){
     let oldBooks=document.querySelectorAll(".cards>div");
     oldBooks.forEach(book=>cardsHolder.removeChild(book));
     let index=confirmDeletionButton.getAttribute("data-index");
+    let deletedBook=myLibrary[index];
+    deleteDataFromDB(deletedBook);
     myLibrary.splice(index,1);
     render();
     updateDataIndex();    
