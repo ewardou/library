@@ -162,7 +162,7 @@ main>div:first-child>button:hover{
 main>div:first-child>button:active{
     background-color:rgb(87, 100, 144);
 }
-.information-section{
+.information-section p:nth-of-type(odd){
     font-weight: bold;
 }
 .information-section+p{

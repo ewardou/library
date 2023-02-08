@@ -9,7 +9,7 @@ import deleteIcon from "./icons/block_FILL0_wght400_GRAD0_opsz48.svg";
 
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-import {getFirestore, collection, addDoc, getDocs, deleteDoc, doc } from "firebase/firestore";
+import {getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCPMiZVHlznbo5sc3XU-YeioB1nricjk1g",
@@ -53,6 +53,14 @@ async function deleteDataFromDB(book){
     deleteDoc(doc(db, "books", bookInDB.id));
 }
 
+async function updateReadStateInDB(book){
+    const querySnapshot = await getDocs(collection(db, "books"));
+    const [bookInDB] = querySnapshot.docs.filter(doc=>doc.data().title===book.title);
+    await updateDoc(doc(db,"books", bookInDB.id),{
+        read: book.read
+    });
+};
+
 let popUp=document.querySelector(".pop-up");
 let overlay=document.querySelector(".overlay");
 let cardsHolder=document.querySelector(".cards");
@@ -65,17 +73,8 @@ class Book{
         this.read=read;
         this.cover=cover;    
     }
-    markAsRead(){
-        let index=this.getAttribute("data-index");
-        if (myLibrary[index].read===false){
-            myLibrary[index].read=true;
-            document.querySelector(`div[data-index="${index}"]`).classList.add("read");
-        } else {
-            myLibrary[index].read=false;
-            document.querySelector(`div[data-index="${index}"]`).classList.remove("read");
-        }    
-    }
 };
+
 
 function addBookToLibrary(){
     let titleInput=document.querySelector("#title");
@@ -116,22 +115,26 @@ function createCard(book){
     image.setAttribute("style","height:200px;width:auto")
     card.appendChild(image);
 
-    let informationContainer=document.createElement("div")
-    for (let property in book){
-        if (book.hasOwnProperty(property)){
-            if (property==="read" || property==="cover") {continue}
-            let newItem=document.createElement("p");
-            let content=document.createElement("p");
-            newItem.textContent=capitalize(`${property}`);
-            newItem.classList.add("information-section");
-            informationContainer.appendChild(newItem);
-            content.textContent=`${book[property]}`;
-            if (content.textContent===""){
-                content.textContent="-";
-            }
-            informationContainer.appendChild(content);
-        }
-    }
+    let informationContainer=document.createElement("div");
+    informationContainer.classList.add("information-section");
+    let titleDisplay=document.createElement("p");
+    titleDisplay.textContent="Title";
+    let titleContent=document.createElement("p");
+    titleContent.textContent = `${book.title}`;
+    informationContainer.append(titleDisplay,titleContent);
+
+    let authorDisplay=document.createElement("p");
+    authorDisplay.textContent="Author";
+    let authorContent=document.createElement("p");
+    authorContent.textContent = `${book.author || "-"}`;
+    informationContainer.append(authorDisplay,authorContent);
+
+    let pagesDisplay=document.createElement("p");
+    pagesDisplay.textContent="Pages";
+    let pagesContent=document.createElement("p");
+    pagesContent.textContent = `${book.pages || "-"}`;
+    informationContainer.append(pagesDisplay, pagesContent);
+
     card.appendChild(informationContainer);
 
     let buttonContainer=document.createElement("div");
@@ -153,12 +156,25 @@ function createCard(book){
     readButton.appendChild(readIcon);
     buttonContainer.appendChild(readButton);
     readButton.setAttribute("data-index",bookIndex);
-    readButton.addEventListener("click",book.markAsRead);
+
+    const markAsRead=()=>{
+        book.read=!book.read;
+        if(book.read){
+            card.classList.add("read");
+        } else {
+            card.classList.remove("read");
+        }
+        updateReadStateInDB(book);
+    }
+
+    readButton.addEventListener("click", markAsRead);
 
     card.appendChild(buttonContainer);
     if (book.read){card.classList.add("read")};
     cardsHolder.appendChild(card);
+    return card;
 }
+
 function render(){
     for (let i=0;i<myLibrary.length;i++){
         createCard(myLibrary[i]);
