@@ -103,10 +103,15 @@ function addBookToLibrary(){
 }
 
 let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,harryPotterCover);
+AddInfoToDB(harryPotter);
 let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,readyPlayerOneCover);
+AddInfoToDB(readyPlayerOne);
 let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false, sapiensCover);
+AddInfoToDB(sapiens);
 let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true, dragonflyInAmberCover);
+AddInfoToDB(dragonflyInAmber)
 let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false, thereWereNoneCover);
+AddInfoToDB(thereWereNone);
 
 function createCard(book){
     let card=document.createElement("div");
