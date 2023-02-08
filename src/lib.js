@@ -1,9 +1,4 @@
 import "./style.css";
-import readyPlayerOneCover from "./covers/readyplayerone.jpg";
-import sapiensCover from "./covers/sapiens.jpg";
-import harryPotterCover from "./covers/harrypotter.jpg";
-import dragonflyInAmberCover from "./covers/dragonfly-in-amber.jpg";
-import thereWereNoneCover from "./covers/and-then-there-were-none.jpg";
 import bookIcon from "./icons/menu_book_FILL0_wght400_GRAD0_opsz48.svg";
 import deleteIcon from "./icons/block_FILL0_wght400_GRAD0_opsz48.svg";
 
@@ -83,13 +78,10 @@ function addBookToLibrary(){
     let read=document.querySelector("#read");
     let cover=document.querySelector("#cover");
 
-    let file=cover.files[0];
-    let url;
-    if (file===undefined){
+    let url = cover.value;
+    if (!cover.value){
         url="https://i.pinimg.com/originals/9e/96/e0/9e96e04a23a8a08cda9fd978529cb2dc.png"
-    } else{
-        url=URL.createObjectURL(file);
-    };
+    }
 
     if(titleInput.value===""){
         return alert("Please enter a title.")
@@ -102,16 +94,6 @@ function addBookToLibrary(){
     document.querySelector("form").reset();
 }
 
-let harryPotter=new Book("Harry Potter and the Philosopher's Stone","J.K Rowling","233",true,harryPotterCover);
-AddInfoToDB(harryPotter);
-let readyPlayerOne=new Book("Ready Player One","Ernest Cline","374",true,readyPlayerOneCover);
-AddInfoToDB(readyPlayerOne);
-let sapiens=new Book("Sapiens: A Brief History of Humankind", "Yuval Noah Harari","512",false, sapiensCover);
-AddInfoToDB(sapiens);
-let dragonflyInAmber=new Book("Dragonfly in Amber","Diana Gabaldon","947",true, dragonflyInAmberCover);
-AddInfoToDB(dragonflyInAmber)
-let thereWereNone=new Book("And Then There Were None","Agatha Christie","264",false, thereWereNoneCover);
-AddInfoToDB(thereWereNone);
 
 function createCard(book){
     let card=document.createElement("div");
